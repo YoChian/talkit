@@ -9,6 +9,7 @@
             style="font-size: 24px"
             @mouseenter="showProfile"
             @mouseleave="hideProfile"
+            @click="openUserHome"
             >关</n-avatar
           >
         </n-badge>
@@ -18,6 +19,7 @@
           style="font-weight: 1000; font-size: medium"
           @mouseenter="showProfile"
           @mouseleave="hideProfile"
+          @click="openUserHome"
           >关注的用户1</n-text
         >
         <n-ellipsis style="max-width: 100%; color: grey">
@@ -42,6 +44,9 @@ export default defineComponent({
     },
     hideProfile(e) {
       globalVar.profilePopoverUpdate(false, e.clientX, e.clientY);
+    },
+    openUserHome() {
+      window.open("homepage.html", "_blank");
     },
   },
   components: { NAvatar, NBadge, NText, NEllipsis, NButton, NPopover },

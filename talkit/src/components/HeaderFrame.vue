@@ -1,6 +1,8 @@
 <template>
   <div class="navbar">
-    <div class="navbar-left"></div>
+    <div class="navbar-left">
+      <n-button quaternary @click="navtoindex">首页</n-button>
+    </div>
     <div class="navbar-mid">
       <n-input-group>
         <n-auto-complete style="width: 350px">
@@ -20,9 +22,17 @@
     </div>
     <div class="navbar-right">
       <template v-if="globalVar.loginStatus.loggedin">
-        <n-button text style="margin-right: 15px"><n-avatar round>你</n-avatar></n-button>
-        <n-button quaternary>消息</n-button>
-        <n-button quaternary>通知</n-button>
+        <n-dropdown :options="avatarOptions" @select="avatarDropdownSelect">
+          <n-button text style="margin-right: 15px" @click="avatarDropdownSelect('home')">
+            <n-avatar round>你</n-avatar>
+          </n-button>
+        </n-dropdown>
+        <n-badge :value="3" :max="99"
+          ><n-button quaternary @click="openMessage">消息</n-button></n-badge
+        >
+        <n-badge :value="100" :max="99"
+          ><n-button quaternary @click="openMessage">通知</n-button></n-badge
+        >
         <n-button quaternary @click="showPostModal">发博</n-button>
       </template>
       <template v-else>
@@ -43,7 +53,16 @@
 <script>
 import { globalVar } from "../globalvar";
 import { defineComponent } from "vue";
-import { NSpace, NAutoComplete, NInputGroup, NButton, NInput, NAvatar } from "naive-ui";
+import {
+  NSpace,
+  NAutoComplete,
+  NInputGroup,
+  NButton,
+  NInput,
+  NAvatar,
+  NDropdown,
+  NBadge,
+} from "naive-ui";
 import LoginModal from "./LoginModal.vue";
 import PostEditModal from "./PostEditModal.vue";
 export default defineComponent({
@@ -53,6 +72,13 @@ export default defineComponent({
       showLoginModal: false,
       loginModalTab: "signin",
       isPostModalShow: false,
+      avatarOptions: [
+        { label: "个人主页", key: "home" },
+        { label: "我的关注", key: "following" },
+        { label: "我的粉丝", key: "follower" },
+        { label: "编辑资料", key: "profile" },
+        { label: "退出登录", key: "logout" },
+      ],
     };
   },
   components: {
@@ -62,6 +88,8 @@ export default defineComponent({
     NButton,
     NInput,
     NAvatar,
+    NDropdown,
+    NBadge,
     LoginModal,
     PostEditModal,
   },
@@ -86,6 +114,24 @@ export default defineComponent({
     hidePostModal() {
       this.isPostModalShow = false;
     },
+    avatarDropdownSelect(key) {
+      switch (key) {
+        case "home":
+          window.open("homepage.html", "_blank");
+          break;
+        case "logout":
+          globalVar.loginStatus.loggedin = false;
+          break;
+        default:
+          break;
+      }
+    },
+    navtoindex() {
+      window.open("/", "_self");
+    },
+    openMessage() {
+      window.open("message.html", "_blank");
+    },
   },
 });
 </script>
@@ -98,6 +144,11 @@ export default defineComponent({
   width: 100%;
   height: 100%;
   z-index: 100;
+}
+.navbar-left {
+  display: flex;
+  justify-content: flex-start;
+  margin-left: 15px;
 }
 .navbar-right {
   display: flex;

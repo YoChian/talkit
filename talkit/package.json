@@ -7,8 +7,6 @@
     "preview": "vite preview --port 4173"
   },
   "dependencies": {
-    "sass": "^1.55.0",
-    "scss": "^0.2.4",
     "vue": "^3.2.38"
   },
   "devDependencies": {

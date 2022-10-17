@@ -2,12 +2,51 @@
   <div class="frame">
     <n-space vertical>
       <n-card size="huge" title="动态">
-        <PostEditFrame />
-        <div class="card"><dynamic-frame /></div>
-        <div class="card"><dynamic-frame /></div>
-        <div class="card"><dynamic-frame /></div>
-        <div class="card"><dynamic-frame /></div>
-        <div class="card"><dynamic-frame /></div>
+        <template v-if="globalVar.loginStatus.loggedin"><PostEditFrame /></template>
+        <n-tabs
+          class="card-tabs"
+          default-value="all"
+          size="large"
+          animated
+          style="margin: 0 -4px"
+          pane-style="padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
+        >
+          <n-tab-pane name="all" tab="全部">
+            <div class="card"><dynamic-frame /></div>
+            <div class="card"><dynamic-frame /></div>
+            <div class="card"><dynamic-frame /></div>
+            <div class="card"><dynamic-frame /></div>
+            <div class="card"><dynamic-frame /></div>
+            <n-pagination style="justify-content: center" :page-count="5" />
+          </n-tab-pane>
+
+          <n-tab-pane name="following" tab="关注的人">
+            <div class="card"><dynamic-frame /></div>
+            <div class="card"><dynamic-frame /></div>
+            <div class="card"><dynamic-frame /></div>
+            <div class="card"><dynamic-frame /></div>
+            <div class="card"><dynamic-frame /></div>
+            <n-pagination style="justify-content: center" :page-count="5" />
+          </n-tab-pane>
+
+          <n-tab-pane name="friends" tab="朋友">
+            <div class="card"><dynamic-frame /></div>
+            <div class="card"><dynamic-frame /></div>
+            <div class="card"><dynamic-frame /></div>
+            <div class="card"><dynamic-frame /></div>
+            <div class="card"><dynamic-frame /></div>
+            <n-pagination style="justify-content: center" :page-count="5" />
+          </n-tab-pane>
+
+          <n-tab-pane name="zone" tab="圈子">
+            <div class="card"><dynamic-frame /></div>
+            <div class="card"><dynamic-frame /></div>
+            <div class="card"><dynamic-frame /></div>
+            <div class="card"><dynamic-frame /></div>
+            <div class="card"><dynamic-frame /></div>
+            <n-pagination style="justify-content: center" :page-count="5" />
+          </n-tab-pane>
+        </n-tabs>
       </n-card>
     </n-space>
     <div class="dynamic-footer">
@@ -18,31 +57,28 @@
 </template>
 
 <script>
+import { globalVar } from "../globalvar";
 import { defineComponent, ref } from "vue";
-import { NSpace, NCard, NButton } from "naive-ui";
+import { NSpace, NCard, NButton, NPagination, NTabs, NTabPane } from "naive-ui";
 import DynamicFrame from "./DynamicFrame.vue";
 import PostEditFrame from "./PostEditFrame.vue";
-export default {
+export default defineComponent({
   setup() {
     return {
-      visibility: ref("open"),
-      visibilityOptions: [
-        { label: "公开", value: "open" },
-        { label: "仅粉丝", value: "fansOnly" },
-        { label: "互相关注", value: "friendsOnly" },
-        { label: "仅自己可见", value: "selfOnly" },
-      ],
-      showTimePicker: ref(false),
+      globalVar,
     };
   },
   components: {
     NSpace,
     NCard,
     NButton,
+    NPagination,
+    NTabs,
+    NTabPane,
     DynamicFrame,
     PostEditFrame,
   },
-};
+});
 </script>
 
 <style scoped>
